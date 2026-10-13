@@ -16,6 +16,14 @@
     <input type="number" id="price" name="price" step="0.01" required>
     <br>
     <br>
+    <label for="category">Category:</label>
+    <select id="category" name="category_id" required>
+        @foreach($categories as $category)
+            <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+        @endforeach
+    </select>
+    <br>
+    <br>
     <button type="submit">Create Product</button>
 
 

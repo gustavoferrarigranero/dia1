@@ -14,7 +14,9 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function all(): array
     {
-        return Product::all()->toArray();
+        return Product::query()
+            ->with('category')
+            ->get()->toArray();
     }
 
     public function create(ProductStoreDTO $dto): object
@@ -22,6 +24,8 @@ class ProductRepository implements ProductRepositoryInterface
         $product = new Product();
         $product->name = $dto->name;
         $product->price = $dto->getPrice();
+        $product->category_id = $dto->categoryId;
+
         $product->save();
 
         return $product;

@@ -7,6 +7,7 @@ final class ProductStoreDTO
     public function __construct(
         public string $name,
         private float $price,
+        public int $categoryId,
     ) {}
 
     public function getPrice(): float

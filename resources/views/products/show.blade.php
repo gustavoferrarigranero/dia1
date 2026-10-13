@@ -11,6 +11,7 @@
     <p>Name: {{ $product->name }}</p>
     <p>Price: {{ $product->price }}</p>
     <p>Price: {{ $product->created_at }}</p>
+    <p>Category: {{ $product->category->name ?? 'N/A' }}</p>
     <br><br><br>
     <a class="action-link" href="{{ route('products.index') }}">Listar</a>
 </body>

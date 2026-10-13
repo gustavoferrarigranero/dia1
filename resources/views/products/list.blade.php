@@ -62,6 +62,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Price</th>
+        <th>Category</th>
         <th>Created At</th>
         <th>Actions</th>
     </tr>
@@ -72,6 +73,11 @@
             <td>{{ $product['id'] }}</td>
             <td>{{ $product['name'] }}</td>
             <td>{{ $product['price'] }}</td>
+            <td>
+                @if(isset($product['category']))
+                    {{ $product['category']['name'] }}
+                @endif
+            </td>
             <td>{{ $product['created_at'] }}</td>
             <td><a class="action-link" href="{{ route('products.show', $product['id']) }}">Ver detalhes</a></td>
         </tr>

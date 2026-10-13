@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Domains\Product\DTOs\ProductStoreDTO;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
+use App\Services\CategoryService;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
 
     public function __construct(
-        public readonly ProductService $service
+        public readonly ProductService $service,
+        public readonly CategoryService $categoryService,
     )
     {
     }
@@ -28,7 +29,9 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('products.create');
+        return view('products.create', [
+            'categories' => $this->categoryService->listAll()]
+        );
     }
 
     public function store(StoreProductRequest $request)
@@ -36,7 +39,8 @@ class ProductController extends Controller
         try {
             $dto = new ProductStoreDTO(
                 $request->validated('name'),
-                $request->validated('price')
+                $request->validated('price'),
+                $request->validated('category_id'),
             );
 
             $product = $this->service->create($dto);
@@ -50,6 +54,8 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        $product->loadMissing('category');
+
         return view('products.show', ['product' => $product]);
     }
 }
