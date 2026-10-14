@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\ProductService;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -37,16 +38,18 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         try {
-            $dto = new ProductStoreDTO(
-                $request->validated('name'),
-                $request->validated('price'),
-                $request->validated('category_id'),
-            );
+            return DB::transaction(function () use ($request) {
+                
+                $dto = new ProductStoreDTO(
+                    $request->validated('name'),
+                    $request->validated('price'),
+                    $request->validated('category_id'),
+                );
 
-            $product = $this->service->create($dto);
+                $product = $this->service->create($dto);
 
-            return view('products.show', ['product' => $product]);
-
+                return view('products.show', ['product' => $product]);
+            });
         } catch (\DomainException $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
