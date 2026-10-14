@@ -17,11 +17,15 @@ class ProductModelTest extends TestCase
             'name' => 'Test Category',
         ]);
 
+        $this->assertEquals('Test Category', $category->name);
+
         $product = new Product([
             'name' => 'Test Product',
             'price' => 99.99,
             'category_id' => $category->id,
         ]);
+
+        $this->assertEquals('Test Product', $product->name);
 
         $product->save();
 
